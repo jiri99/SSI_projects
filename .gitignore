@@ -1,0 +1,20 @@
+# Vim files
+**/*.*~
+**/*.swp
+
+# backup files
+**/*.bak
+**/*.old
+**/*.notes
+
+# graphic files
+**/*.png
+**/*.svg
+**/*.pdf
+
+# data files
+**/*.csv
+#output/**/*.csv
+
+# binnary map files
+**/*.bin 
