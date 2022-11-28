@@ -27,10 +27,9 @@ s_pedestrians = np.zeros([number_of_pedestrians, 2])
 orientation_pedestrians = np.zeros([number_of_pedestrians, 2])
 
 
-
 # Parameters of model
 k0 = 1
-k_d = 500
+kd = 500
 alpha = 3
 klambda = 0.3
 df = 2
