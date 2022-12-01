@@ -10,6 +10,7 @@ from process import *
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp, odeint
 
 
 s_pedestrian[0,:] = [10,5]
@@ -28,7 +29,6 @@ v_pedestrian[2,:] = [0,1]
 v_pedestrian[3,:] = [1,0]
 
 disp.plot_hall(s_pedestrian, q_pedestrian, orientation_pedestrians, hall_length, left_wall, right_wall, one_sided_diff, one_sided_door_diff)
-
 
 # Force calculation
 for ped_id_i in range(0, number_of_pedestrians):
@@ -57,8 +57,20 @@ for ped_id_i in range(0, number_of_pedestrians):
 
 forces["total"] = forces["target"] + forces["external"]
 
-
 # Force projection
+i = 2
+F = lambda t, s: 20.0
+t_eval = [time_discrete[i]]
+t_span = np.linspace(time_discrete[i-1], time_discrete[i+1], 101)
+v0 = [10.0]
+# sol = solve_ivp(F, t_span, v0)
+sol = odeint(F, v0, t_span)
 
+# Torgue input
+theta0_i = math.atan(forces["target"][i,1]/forces["target"][i,0])
+I_i = 1/2*m_pedestrian[i]*r_pedestrian[i]
+ktheta = I_i*klambda*f0_i
+komega = I_i*(1+alpha)*math.sqrt((klambda*f0_i)/alpha)
+u0_i = -ktheta(q_pedestrian[i,0]-theta0_i)-komega*[i,1]
 
 
