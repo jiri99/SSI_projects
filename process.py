@@ -55,3 +55,32 @@ def repulsive_force_wall(r_i, v_i, s_i, s_w):
     delta_v_iw = np.transpose(np.array([0,0])-v_i)*t_iw
     Fw_iw = lambda r_iw,d_iw,n_iw : np.array([A_w*math.exp((r_iw-d_iw)/B_w)+k_1*max(r_iw-d_iw,0)])*n_iw+k_2*max(r_iw-d_iw,0)*delta_v_iw*t_iw
     return Fw_iw(r_iw, d_iw, n_iw)
+
+def total_force():
+    for ped_id_i in range(0, number_of_pedestrians):
+        forces_external_i = np.zeros([number_of_pedestrians,2])
+        for ped_id_j in range(0, number_of_pedestrians):
+            if(ped_id_i != ped_id_j):
+                forces_external_i[ped_id_j, :] = repulsive_force_pedestrian(r_pedestrian[ped_id_i], r_pedestrian[ped_id_j], v_pedestrian[ped_id_i], v_pedestrian[ped_id_j], s_pedestrian[ped_id_i], s_pedestrian[ped_id_j])
+        forces_external_i = np.matrix(forces_external_i)
+        forces["rep_pedestrian"][ped_id_i,:] = forces_external_i.sum(axis=0)
+    
+    for ped_id_i in range(0, number_of_pedestrians):
+        wall_dist = [abs(s_pedestrian[ped_id_i,0]-left_wall), abs(s_pedestrian[ped_id_i,0]-right_wall)]
+        if((left_wall + one_sided_door_diff) > s_pedestrian[ped_id_i,0] and (right_wall - one_sided_door_diff) < s_pedestrian[ped_id_i,0]):
+            wall_dist.append(abs(s_pedestrian[ped_id_i,1]-hall_length/2))
+        else:
+            wall_dist.append(np.linalg.norm(np.array(s_pedestrian[ped_id_i,:]) - np.array([left_wall + one_sided_door_diff, hall_length/2])))
+            wall_dist.append(np.linalg.norm(np.array(s_pedestrian[ped_id_i,:]) - np.array([right_wall - one_sided_door_diff, hall_length/2])))
+        forces["rep_wall"][ped_id_i,:] = repulsive_force_wall(r_pedestrian[ped_id_i], v_pedestrian[ped_id_i], s_pedestrian[ped_id_i], min(wall_dist))
+    
+    forces["external"] = forces["rep_pedestrian"] + forces["rep_wall"]
+    
+    for ped_id_i in range(0, number_of_pedestrians):
+        end_point_direction = end_point - s_pedestrian[ped_id_i,:]
+        vd_i = vd*end_point_direction/np.linalg.norm(end_point_direction)
+        forces["target"][ped_id_i,:] = m_pedestrian[ped_id_i]*(vd_i-v_pedestrian[ped_id_i])/tau_i
+    
+    forces["total"] = forces["target"] + forces["external"]
+    
+    return forces

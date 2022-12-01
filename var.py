@@ -23,9 +23,10 @@ end_point = np.array([hall_length/2, hall_length])
 number_of_pedestrians = 4
 r_pedestrian = np.random.rand(number_of_pedestrians)*0.35 + 0.25
 m_pedestrian = np.random.randint(60, 90, number_of_pedestrians)
-F_0 = np.zeros([number_of_pedestrians, 2])
 s_pedestrian = np.zeros([number_of_pedestrians, 2])
 v_pedestrian = np.zeros([number_of_pedestrians, 2])
+q_pedestrian = np.zeros([number_of_pedestrians, 2])
+u_pedestrian = np.zeros([number_of_pedestrians, 2])
 forces = {"rep_pedestrian": np.zeros([number_of_pedestrians, 2]), 
           "rep_wall": np.zeros([number_of_pedestrians, 2]),
           "external": np.zeros([number_of_pedestrians, 2]),

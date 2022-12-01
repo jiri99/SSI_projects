@@ -11,34 +11,26 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 
-def plot_hall(s_pedestrian, orientation_pedestrians, hall_length, left_wall, right_wall, one_sided_diff, one_sided_door_diff):
-    figure, axes = plt.subplots()
-    plt.plot([left_wall, left_wall], [0,100], color="black")
-    plt.plot([right_wall, right_wall], [0,100], color="black")
-    plt.plot([left_wall, left_wall + one_sided_door_diff], [hall_length/2,hall_length/2], color="black")
-    plt.plot([right_wall - one_sided_door_diff, right_wall], [hall_length/2,hall_length/2], color="black")
-    plt.xlim([0, hall_length])
-    plt.ylim([0, hall_length])
-    plt.axis('off')
-    for i in range(0,np.shape(s_pedestrian)[0]):    
-        axes.add_artist(plt.Circle((left_wall+s_pedestrian[i,0], s_pedestrian[i,1]), 1, fill = False ))
-        axes.add_artist(plt.Circle((left_wall+s_pedestrian[i,0], s_pedestrian[i,1]+1), 0.5, fill = True, color="red" ))
-    plt.savefig('./plots/hall_plot.pdf') 
-    plt.show()
 
 s_pedestrian[0,:] = [10,5]
 s_pedestrian[1,:] = [12,6]
 s_pedestrian[2,:] = [10,25]
 s_pedestrian[3,:] = [20,35]
 
+q_pedestrian[0,:] = [math.pi/2,0]
+q_pedestrian[1,:] = [math.pi/3,0]
+q_pedestrian[2,:] = [math.pi/4,0]
+q_pedestrian[3,:] = [math.pi/6,0]
+
 v_pedestrian[0,:] = [1,1]
 v_pedestrian[1,:] = [-1,-1]
 v_pedestrian[2,:] = [0,1]
 v_pedestrian[3,:] = [1,0]
 
-disp.plot_hall(s_pedestrian, orientation_pedestrians, hall_length, left_wall, right_wall, one_sided_diff, one_sided_door_diff)
+disp.plot_hall(s_pedestrian, q_pedestrian, orientation_pedestrians, hall_length, left_wall, right_wall, one_sided_diff, one_sided_door_diff)
 
 
+# Force calculation
 for ped_id_i in range(0, number_of_pedestrians):
     forces_external_i = np.zeros([number_of_pedestrians,2])
     for ped_id_j in range(0, number_of_pedestrians):
@@ -66,4 +58,7 @@ for ped_id_i in range(0, number_of_pedestrians):
 forces["total"] = forces["target"] + forces["external"]
 
 
-# F_0 = np.zeros(number_of_pedestrians,2)
+# Force projection
+
+
+
