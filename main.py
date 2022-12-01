@@ -71,6 +71,6 @@ theta0_i = math.atan(forces["target"][i,1]/forces["target"][i,0])
 I_i = 1/2*m_pedestrian[i]*r_pedestrian[i]
 ktheta = I_i*klambda*f0_i
 komega = I_i*(1+alpha)*math.sqrt((klambda*f0_i)/alpha)
-u0_i = -ktheta(q_pedestrian[i,0]-theta0_i)-komega*[i,1]
+u0_i = -ktheta(q_pedestrian[i,0]-theta0_i)-komega*q_pedestrian[i,1]
 
 
