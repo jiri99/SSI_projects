@@ -40,7 +40,7 @@ def group_cohesion(f0_i, fe_i, rf_i, r0_i, v0_i):
 def repulsive_force_pedestrian(r_i, r_j, v_i, v_j, s_i, s_j):
     r_ij = r_i + r_j
     d_ij = np.linalg.norm(s_i-s_j)
-    n_ij = np.array([(s_i-s_j)[i]/np.linalg.norm(s_i-s_j) for i in range(0,2)])
+    n_ij = (s_i-s_j)/d_ij
     t_ij = np.transpose([-n_ij[1], n_ij[0]])
     delta_v_ij = np.transpose(v_j-v_i)*t_ij
     Fp_ij = lambda r_ij,d_ij,n_ij : np.array([A_i*math.exp((r_ij-d_ij)/B_i)+k_1*max(r_ij-d_ij,0)])*n_ij+k_2*max(r_ij-d_ij,0)*delta_v_ij*t_ij
@@ -50,7 +50,7 @@ def repulsive_force_pedestrian(r_i, r_j, v_i, v_j, s_i, s_j):
 def repulsive_force_wall(r_i, v_i, s_i, s_w):
     r_iw = r_i + 0
     d_iw = np.linalg.norm(s_i-s_w)
-    n_iw = [(s_i-s_w)[i]/np.linalg.norm(r_i-0) for i in range(0,2)]
+    n_iw = (s_i-s_w)/d_iw
     t_iw = np.transpose([-n_iw[1], n_iw[0]])
     delta_v_iw = np.transpose(np.array([0,0])-v_i)*t_iw
     Fw_iw = lambda r_iw,d_iw,n_iw : np.array([A_w*math.exp((r_iw-d_iw)/B_w)+k_1*max(r_iw-d_iw,0)])*n_iw+k_2*max(r_iw-d_iw,0)*delta_v_iw*t_iw

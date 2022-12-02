@@ -5,6 +5,7 @@ Created on Sun Nov 20 15:00:25 2022
 @author: jiri.nabelek
 """
 import numpy as np
+import math
 
 
 # Hall properties 
@@ -23,15 +24,16 @@ end_point = np.array([hall_length/2, hall_length])
 number_of_pedestrians = 4
 r_pedestrian = np.random.rand(number_of_pedestrians)*0.35 + 0.25
 m_pedestrian = np.random.randint(60, 90, number_of_pedestrians)
-s_pedestrian = np.zeros([number_of_pedestrians, 2])
-v_pedestrian = np.zeros([number_of_pedestrians, 2])
-q_pedestrian = np.zeros([number_of_pedestrians, 2])
-u_pedestrian = np.zeros([number_of_pedestrians, 2])
+F_0 = np.zeros([number_of_pedestrians, 2])
 forces = {"rep_pedestrian": np.zeros([number_of_pedestrians, 2]), 
           "rep_wall": np.zeros([number_of_pedestrians, 2]),
           "external": np.zeros([number_of_pedestrians, 2]),
           "target": np.zeros([number_of_pedestrians, 2])}
 orientation_pedestrians = np.zeros([number_of_pedestrians, 2])
+
+
+# Rotation matrix
+R = lambda theta: np.array([[math.cos(theta), -math.sin(theta)], [math.sin(theta), math.cos(theta)]])
 
 
 # Parameters of model

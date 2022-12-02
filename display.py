@@ -8,7 +8,7 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 
-def plot_hall(s_pedestrian, q_pedestrian, orientation_pedestrians, hall_length, left_wall, right_wall, one_sided_diff, one_sided_door_diff):
+def plot_hall(s_pedestrian, q_pedestrian, hall_length, left_wall, right_wall, one_sided_diff, one_sided_door_diff):
     figure, axes = plt.subplots()
     plt.plot([left_wall, left_wall], [0,hall_length], color="black")
     plt.plot([right_wall, right_wall], [0,hall_length], color="black")
