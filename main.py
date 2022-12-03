@@ -64,9 +64,18 @@ for ped_id_i in range(0, number_of_pedestrians):
 forces["total"] = forces["target"] + forces["external"]
 
 # Force projection
-# for ped_id_i in range(0, number_of_pedestrians):
-#     R()
+for ped_id_i in range(0, number_of_pedestrians):
+    beta = math.atan(forces["total"][ped_id_i,1]/forces["total"][ped_id_i,0])
+    delta = math.atan(forces["external"][ped_id_i,1]/forces["external"][ped_id_i,0])
+    u0_i = np.dot(R(beta + state_data["q"][ped_id_i,0,t] - math.pi/2), forces["external"][ped_id_i,:])
+    uf_i = np.dot(R(delta + state_data["q"][ped_id_i,0,t]), forces["total"][ped_id_i,:])
 
+    f0_i = np.linalg.norm(forces["target"][ped_id_i,:])
+    theta0_i = math.atan(forces["target"][ped_id_i,1]/forces["target"][ped_id_i,0])
+    I_i = 1/2*m_pedestrian[ped_id_i]*r_pedestrian[ped_id_i]
+    ktheta = I_i*klambda*f0_i
+    komega = I_i*(1+alpha)*math.sqrt((klambda*f0_i)/alpha)
+    utheta_i = -ktheta*(state_data["q"][ped_id_i,0,t]-theta0_i)-komega*state_data["q"][ped_id_i,1,t]
 
 # ODE solver
 i = 2
@@ -79,8 +88,4 @@ sol = odeint(F, v0, t_span)
 
 
 # Torgue input
-# theta0_i = math.atan(forces["target"][i,1]/forces["target"][i,0])
-# I_i = 1/2*m_pedestrian[i]*r_pedestrian[i]
-# ktheta = I_i*klambda*f0_i
-# komega = I_i*(1+alpha)*math.sqrt((klambda*f0_i)/alpha)
-# u0_i = -ktheta(q_pedestrian[i,0]-theta0_i)-komega*q_pedestrian[i,1]
+
