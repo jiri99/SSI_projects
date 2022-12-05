@@ -100,4 +100,7 @@ for t in range(0,len(time_discrete)-1):
         
         state_data["q"][ped_id_i,:,t+1] = state_data["q"][ped_id_i,:,t] + tau * q_dot
         
-    disp.plot_hall(state_data["s"][:,:,t], state_data["q"][:,:,t], hall_length, left_wall, right_wall, one_sided_diff, one_sided_door_diff)
+    disp.plot_hall(t, state_data["s"][:,:,t], state_data["q"][:,:,t], hall_length, left_wall, right_wall, one_sided_diff, one_sided_door_diff, False)
+
+for t in [0, 40, 60, 90]:
+    disp.plot_hall(t, state_data["s"][:,:,t], state_data["q"][:,:,t], hall_length, left_wall, right_wall, one_sided_diff, one_sided_door_diff, True)

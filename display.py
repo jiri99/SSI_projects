@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import time
 
 
-def plot_hall(s_pedestrian, q_pedestrian, hall_length, left_wall, right_wall, one_sided_diff, one_sided_door_diff):
+def plot_hall(t, s_pedestrian, q_pedestrian, hall_length, left_wall, right_wall, one_sided_diff, one_sided_door_diff, save_fig):
     figure, axes = plt.subplots()
     plt.plot([left_wall, left_wall], [0,hall_length], color="black")
     plt.plot([right_wall, right_wall], [0,hall_length], color="black")
@@ -22,7 +22,8 @@ def plot_hall(s_pedestrian, q_pedestrian, hall_length, left_wall, right_wall, on
     for i in range(0,np.shape(s_pedestrian)[0]):    
         axes.add_artist(plt.Circle((left_wall+s_pedestrian[i,0], s_pedestrian[i,1]), 1, fill = False ))
         axes.add_artist(plt.Circle((left_wall+s_pedestrian[i,0] + math.cos(q_pedestrian[i,0]), s_pedestrian[i,1] + abs(math.sin(q_pedestrian[i,0]))), 0.5, fill = True, color="red" ))
-    # plt.savefig('./plots/hall_plot.pdf')
+    if(save_fig):
+        plt.savefig('./plots/hall_plot_' + str(t) + '.pdf')
     plt.show()
     time. sleep(0.3)
 
