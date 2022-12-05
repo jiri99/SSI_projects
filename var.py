@@ -21,7 +21,7 @@ end_point = np.array([hall_length/2 - left_wall, hall_length])
 
 
 # Peasant properties
-number_of_pedestrians = 4
+number_of_pedestrians = 3
 r_pedestrian = np.random.rand(number_of_pedestrians)*0.35 + 0.25
 m_pedestrian = np.random.randint(60, 90, number_of_pedestrians)
 F_0 = np.zeros([number_of_pedestrians, 2])
@@ -44,12 +44,12 @@ df = 2
 d0 = 1
 kg_1 = 200
 kg_2 = 200
-vd = 1.5
+vd = 5
 
 
 # Parameters used in SFM
 test_start = 0
-test_end = 20
+test_end = 60
 tau = 0.5
 time_discrete = np.linspace(test_start, test_end, int((test_end-test_start)/tau+1))
 A_i = 2000

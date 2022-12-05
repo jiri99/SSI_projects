@@ -15,9 +15,9 @@ import matplotlib.pyplot as plt
 # Input force
 def force_input(f0_i, fe_i, rf_i, r0_i, v0_i):
     uf_i = np.dot(np.transpose(f0_i+fe_i),rf_i)
-    u0_i = k0*np.dot(np.transpose(fe_i),r0_i)-kd*v0_i
-    # u0_i = k0*np.dot(np.transpose(fe_i),r0_i)
-    return np.array([uf_i, u0_i])
+    # u0_i = k0*np.dot(np.transpose(fe_i),r0_i)-kd*v0_i
+    u0_i = k0*np.dot(np.transpose(fe_i),r0_i)
+    return uf_i, u0_i
 
 # Input torgue
 def torgue_input(r_i, r_j, v_i, v_j, s_i, s_j):

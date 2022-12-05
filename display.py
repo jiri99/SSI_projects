@@ -21,9 +21,9 @@ def plot_hall(s_pedestrian, q_pedestrian, hall_length, left_wall, right_wall, on
     plt.axis('off')
     for i in range(0,np.shape(s_pedestrian)[0]):    
         axes.add_artist(plt.Circle((left_wall+s_pedestrian[i,0], s_pedestrian[i,1]), 1, fill = False ))
-        axes.add_artist(plt.Circle((left_wall+s_pedestrian[i,0] + math.sin(q_pedestrian[i,0]), s_pedestrian[i,1] + math.cos(q_pedestrian[i,0])), 0.5, fill = True, color="red" ))
+        axes.add_artist(plt.Circle((left_wall+s_pedestrian[i,0] + math.cos(q_pedestrian[i,0]), s_pedestrian[i,1] + abs(math.sin(q_pedestrian[i,0]))), 0.5, fill = True, color="red" ))
     # plt.savefig('./plots/hall_plot.pdf')
     plt.show()
-    time. sleep(1)
+    time. sleep(0.3)
 
 
