@@ -8,17 +8,14 @@ import numpy as np
 import math
 
 
-# Hall properties 
-hall_length = 100
-hall_width = 30
-door_width = 30
-
-one_sided_diff = hall_width/2
-one_sided_door_diff = (2*one_sided_diff*(100-door_width)/100)/2
-left_wall = hall_length/2 - one_sided_diff
-right_wall = hall_length/2 + one_sided_diff
-end_point = np.array([hall_length/2 - left_wall, hall_length])
-
+# Hall properties
+def calculate_hall_params(hall_properties):
+    hall_properties["one_sided_diff"] = hall_properties["hall_width"]/2
+    hall_properties["one_sided_door_diff"] = (2*hall_properties["one_sided_diff"]*(100-hall_properties["door_width"])/100)/2
+    hall_properties["left_wall"] = hall_properties["hall_length"]/2 - hall_properties["one_sided_diff"]
+    hall_properties["right_wall"] = hall_properties["hall_length"]/2 + hall_properties["one_sided_diff"]
+    hall_properties["end_point"] = np.array([hall_properties["hall_length"]/2 - hall_properties["left_wall"], hall_properties["hall_length"]])
+    return hall_properties
 
 # Peasant properties
 number_of_pedestrians = 3
