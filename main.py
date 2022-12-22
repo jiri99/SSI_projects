@@ -11,10 +11,13 @@ import math
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp, odeint
 
+number_of_pedestrians = 3
+
 hall_properties = {}
 hall_properties["hall_length"] = 100
 hall_properties["hall_width"] = 30
 hall_properties["door_width"] = 30
 hall_properties = calculate_hall_params(hall_properties)
+pedestrian_var = create_pedestrian_var(number_of_pedestrians)
 
-state_data = run_model(True, hall_properties)
+state_data = run_model(True, hall_properties, pedestrian_var, number_of_pedestrians)

@@ -15,16 +15,15 @@ def calculate_hall_params(hall_properties):
     hall_properties["left_wall"] = hall_properties["hall_length"]/2 - hall_properties["one_sided_diff"]
     hall_properties["right_wall"] = hall_properties["hall_length"]/2 + hall_properties["one_sided_diff"]
     hall_properties["end_point"] = np.array([hall_properties["hall_length"]/2 - hall_properties["left_wall"], hall_properties["hall_length"]])
+    hall_properties["mid_point"] = np.array([hall_properties["hall_length"]/2 - hall_properties["left_wall"], hall_properties["hall_length"]/2])
     return hall_properties
 
 # Peasant properties
-number_of_pedestrians = 3
-r_pedestrian = np.random.rand(number_of_pedestrians)*0.35 + 0.25
-m_pedestrian = np.random.randint(60, 90, number_of_pedestrians)
-F_0 = np.zeros([number_of_pedestrians, 2])
-forces = {"rep_pedestrian": np.zeros([number_of_pedestrians, 2]), 
-          "rep_wall": np.zeros([number_of_pedestrians, 2])}
-orientation_pedestrians = np.zeros([number_of_pedestrians, 2])
+def create_pedestrian_var(number_of_pedestrians):
+    pedestrian_var = {}
+    pedestrian_var["r_pedestrian"] = np.random.rand(number_of_pedestrians)*0.35 + 0.25
+    pedestrian_var["m_pedestrian"] = np.random.randint(60, 90, number_of_pedestrians)
+    return pedestrian_var
 
 
 # Rotation matrix

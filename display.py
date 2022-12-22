@@ -25,6 +25,6 @@ def plot_hall(t, s_pedestrian, q_pedestrian, hall_properties, save_fig):
     if(save_fig):
         plt.savefig('./plots/hall_plot_' + str(t) + '.pdf')
     plt.show()
-    time. sleep(0.3)
+    time. sleep(0.001)
 
 
