@@ -47,7 +47,7 @@ plt.scatter(door_width_m, flow, c ="blue",
             marker ="s",
             edgecolor ="purple",
             s = 50)
- 
+
 plt.xlabel("Width of the narrowed part of the corridor [m]")
 plt.ylabel("Flow [ped/s]")
 plt.show()

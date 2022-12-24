@@ -26,13 +26,14 @@ def torgue_input(r_i, r_j, v_i, v_j, s_i, s_j):
     return np.array([uf_i, u0_i])
 
 # Group cohesion
-def group_cohesion(f0_i, fe_i, rf_i, r0_i, v0_i):
-    if(np.norm(np.dot(np.transpose(p_i),rf_i)) > df):
+def group_cohesion(f0_i, fe_i, rf_i, r0_i, v0_i, c):
+    p_i = c - r_i
+    if(np.linalg.norm(np.dot(np.transpose(p_i),rf_i)) > df):
         h = 1   
     else:
         h = 0
-    uf_i = np.transpose(f0_i+fe_i)*rf_i + kg_1*h
-    u0_i = k0*np.transpose(fe_i)*r0_i - kd*v0_i + kg_2*h
+    uf_i = np.dot(np.transpose(f0_i+fe_i),rf_i) + kg_1*h
+    u0_i = k0*np.dot(np.transpose(fe_i),r0_i) - kd*v0_i + kg_2*h
     return np.array([uf_i, u0_i])
 
 # Repulsive force to another pedestrian

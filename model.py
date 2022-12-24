@@ -29,15 +29,15 @@ def run_model(plot_figure, hall_properties, pedestrian_var, number_of_pedestrian
     forces = {"rep_pedestrian": np.zeros([number_of_pedestrians, 2]), 
           "rep_wall": np.zeros([number_of_pedestrians, 2])}
     
-    state_data["s"][0,:,0] = [20,5]
-    state_data["s"][1,:,0] = [20,10]
-    state_data["s"][2,:,0] = [20,15]
-    state_data["s"][3,:,0] = [10,5]
-    state_data["s"][4,:,0] = [10,10]
-    state_data["s"][5,:,0] = [10,15]
-    state_data["s"][6,:,0] = [15,5]
-    state_data["s"][7,:,0] = [15,10]
-    state_data["s"][8,:,0] = [15,15]
+    # state_data["s"][0,:,0] = [20,5]
+    state_data["s"][0,:,0] = [20,10]
+    # state_data["s"][2,:,0] = [20,15]
+    # state_data["s"][3,:,0] = [10,5]
+    state_data["s"][1,:,0] = [10,15]
+    # state_data["s"][5,:,0] = [10,15]
+    state_data["s"][2,:,0] = [15,5]
+    # state_data["s"][7,:,0] = [15,10]
+    # state_data["s"][8,:,0] = [15,15]
     
     state_data["q"][0,:,0] = [0,0]
     state_data["q"][1,:,0] = [0,0]
@@ -78,16 +78,17 @@ def run_model(plot_figure, hall_properties, pedestrian_var, number_of_pedestrian
             end_point_direction = hall_properties["end_point"] - state_data["s"][ped_id_i,:,t]
             vd_i = vd*end_point_direction/np.linalg.norm(end_point_direction)
             F0 = pedestrian_var["m_pedestrian"][ped_id_i]*(vd_i-state_data["v"][ped_id_i,:,t])/tau
-            # state_data["F_0"][ped_id_i,:,t] = vd*F0/np.linalg.norm(F0)
-            state_data["F_0"][ped_id_i,:,t] = F0
+            state_data["F_0"][ped_id_i,:,t] = vd*F0/np.linalg.norm(F0)
+            # state_data["F_0"][ped_id_i,:,t] = F0
             
         
-        state_data["F"][:,:,t] = state_data["F_0"][ped_id_i,:,t] + state_data["F_e"][ped_id_i,:,t]
+        state_data["F"][:,:,t] = state_data["F_0"][:,:,t] + state_data["F_e"][:,:,t]
         
         # Force projection
         for ped_id_i in range(0, number_of_pedestrians):
             
             uf_i, u0_i = force_input(state_data["F_0"][ped_id_i,1,t], state_data["F_e"][ped_id_i,:,t], R(state_data["q"][ped_id_i,0,t])[:,0], R(state_data["q"][ped_id_i,0,t])[:,1], state_data["vB"][ped_id_i,1,t])
+            # uf_i, u0_i = group_cohesion(state_data["F_0"][ped_id_i,1,t], state_data["F_e"][ped_id_i,:,t], R(state_data["q"][ped_id_i,0,t])[:,0], R(state_data["q"][ped_id_i,0,t])[:,1], state_data["vB"][ped_id_i,1,t])
         
             state_data["uB"][ped_id_i,:,t] = np.transpose([uf_i, u0_i])
             state_data["u0"][ped_id_i,:,t] = u0_i
