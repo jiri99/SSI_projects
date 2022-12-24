@@ -29,23 +29,29 @@ def run_model(plot_figure, hall_properties, pedestrian_var, number_of_pedestrian
     forces = {"rep_pedestrian": np.zeros([number_of_pedestrians, 2]), 
           "rep_wall": np.zeros([number_of_pedestrians, 2])}
     
-    # state_data["s"][0,:,0] = [20,5]
     state_data["s"][0,:,0] = [20,10]
-    # state_data["s"][2,:,0] = [20,15]
-    # state_data["s"][3,:,0] = [10,5]
-    state_data["s"][1,:,0] = [10,15]
-    # state_data["s"][5,:,0] = [10,15]
+    state_data["s"][1,:,0] = [10,20]
     state_data["s"][2,:,0] = [15,5]
-    # state_data["s"][7,:,0] = [15,10]
-    # state_data["s"][8,:,0] = [15,15]
+    # state_data["s"][3,:,0] = [25,5]
+    # state_data["s"][4,:,0] = [5,5]
+    # state_data["s"][5,:,0] = [5,20]
+    # state_data["s"][6,:,0] = [25,20]
     
     state_data["q"][0,:,0] = [0,0]
     state_data["q"][1,:,0] = [0,0]
     state_data["q"][2,:,0] = [0,0]
+    # state_data["q"][3,:,0] = [0,0]
+    # state_data["q"][4,:,0] = [0,0]
+    # state_data["q"][5,:,0] = [0,0]
+    # state_data["q"][6,:,0] = [0,0]
     
     state_data["v"][0,:,0] = [0,1]
     state_data["v"][1,:,0] = [0,1]
     state_data["v"][2,:,0] = [0,1]
+    # state_data["v"][3,:,0] = [0,1]
+    # state_data["v"][4,:,0] = [0,1]
+    # state_data["v"][5,:,0] = [0,1]
+    # state_data["v"][6,:,0] = [0,1]
     
     for t in range(0,len(time_discrete)-1):
         # Force calculation
@@ -71,16 +77,13 @@ def run_model(plot_figure, hall_properties, pedestrian_var, number_of_pedestrian
         state_data["F_e"][:,:,t] = forces["rep_pedestrian"] + forces["rep_wall"]
         
         for ped_id_i in range(0, number_of_pedestrians):
-            # if(state_data["s"][ped_id_i,1,t] < hall_properties["hall_length"]/2 - hall_properties["door_width"]/2):            
-            #     end_point_direction = hall_properties["mid_point"] - state_data["s"][ped_id_i,:,t]
-            # else:    
-            #     end_point_direction = hall_properties["end_point"] - state_data["s"][ped_id_i,:,t]
-            end_point_direction = hall_properties["end_point"] - state_data["s"][ped_id_i,:,t]
+            if(state_data["s"][ped_id_i,1,t] < hall_properties["hall_length"]/2 - hall_properties["door_width"]/2):            
+                end_point_direction = hall_properties["mid_point"] - state_data["s"][ped_id_i,:,t]
+            else:    
+                end_point_direction = hall_properties["end_point"] - state_data["s"][ped_id_i,:,t]
             vd_i = vd*end_point_direction/np.linalg.norm(end_point_direction)
             F0 = pedestrian_var["m_pedestrian"][ped_id_i]*(vd_i-state_data["v"][ped_id_i,:,t])/tau
             state_data["F_0"][ped_id_i,:,t] = vd*F0/np.linalg.norm(F0)
-            # state_data["F_0"][ped_id_i,:,t] = F0
-            
         
         state_data["F"][:,:,t] = state_data["F_0"][:,:,t] + state_data["F_e"][:,:,t]
         
@@ -93,10 +96,14 @@ def run_model(plot_figure, hall_properties, pedestrian_var, number_of_pedestrian
             state_data["uB"][ped_id_i,:,t] = np.transpose([uf_i, u0_i])
             state_data["u0"][ped_id_i,:,t] = u0_i
             state_data["uf"][ped_id_i,:,t] = uf_i
+            if(abs(state_data["q"][ped_id_i,0,t] - math.pi/2) < 0.01):
+                klambda = 0.000001
+            else:
+                klambda = 0.03
         
             # Torgue input
             f0_i = np.linalg.norm(state_data["F_0"][ped_id_i,:,t])
-            theta0_i = math.atan(state_data["F_0"][ped_id_i,1,t]/state_data["F_0"][ped_id_i,0,t])
+            theta0_i = math.pi/2-math.atan(state_data["F_0"][ped_id_i,0,t]/state_data["F_0"][ped_id_i,1,t])
             I_i = 1/2*pedestrian_var["m_pedestrian"][ped_id_i]*pedestrian_var["r_pedestrian"][ped_id_i]**2
             ktheta = I_i*klambda*f0_i
             komega = I_i*(1+alpha)*math.sqrt((klambda*f0_i)/alpha)

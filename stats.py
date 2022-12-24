@@ -14,13 +14,13 @@ import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp, odeint
 
 door_width_var = np.linspace(30, 80, 51)
-number_of_pedestrians = 9
+number_of_pedestrians = 3
 
 test_output = []
 hall_properties = {}
 hall_properties["hall_length"] = 100
 hall_properties["hall_width"] = 30
-flow = np.zeros([number_of_pedestrians])
+flow = np.zeros([len(door_width_var)])
 
 # Run model
 for width in door_width_var:
@@ -31,12 +31,16 @@ for width in door_width_var:
     test_output.append(run_model(False, hall_properties, pedestrian_var, number_of_pedestrians))
 
 # Static calculation
-for test_id in range(0, len(test_output)-1):
+for test_id in range(0, len(test_output)):
     ped_id_through = np.zeros([number_of_pedestrians])
     for ped_id in range(0, number_of_pedestrians):
         x_ped = test_output[test_id]["s"][ped_id,1,:]
         ped_id_through[ped_id] = np.where(x_ped > hall_properties["hall_length"]/2)[0][0]
-    time_diff = time_discrete[max(ped_id_through)] - time_discrete[min(ped_id_through)]
+    if(len(ped_id_through) == number_of_pedestrians):
+        print("Ok")
+    else:
+        print(test_id)
+    time_diff = time_discrete[int(max(ped_id_through))] - time_discrete[int(min(ped_id_through))]
     
     flow[test_id] = number_of_pedestrians/time_diff
     
@@ -50,4 +54,5 @@ plt.scatter(door_width_m, flow, c ="blue",
 
 plt.xlabel("Width of the narrowed part of the corridor [m]")
 plt.ylabel("Flow [ped/s]")
+plt.savefig('./plots/stats_' + str(number_of_pedestrians) + '.pdf')
 plt.show()
